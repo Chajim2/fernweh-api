@@ -1,0 +1,70 @@
+@host = http://127.0.0.1:8000
+#@host = https://chajim.pythonanywhere.com/
+#@host = http://89.168.73.225/
+
+### GET simple alive check
+GET {{host}}
+
+### POST Login
+# @name login
+POST {{host}}/auth/login
+Content-Type: application/x-www-form-urlencoded
+
+username={{DEBUG_USER2}}&password={{DEBUG_PASS2}}
+
+### Use the login token in subsequent requests
+@token = {{login.response.body.$.access_token}}
+
+### POST Register
+POST {{host}}/auth/register
+Content-Type: application/json
+
+{"username": "{{DEBUG_USER2}}", "password": "{{DEBUG_PASS2}}"}
+
+### POST Save entry
+POST {{host}}/entries
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{"text": "I saw a guy get mugged today", "title": "Good"}
+
+### POST Get emotions
+POST {{host}}/ai/get_emotions
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{"text": "I really wanna feel nature and hear some birds", "emotions": "Good"}
+
+### POST Add friend -- not supported anymore
+POST {{host}}/add_friend
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{"friend_name": "{{DEBUG_USER1}}"}
+
+### GET Get post with title
+GET {{host}}/entries/1
+Content-Type: application/json
+Authorization: Bearer {{token}} 
+
+{}
+
+### GET get feed entries and comments relevant to current user
+GET {{host}}/entries/feed
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+### POST Get friends
+POST {{host}}/get_friends
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{}
+
+### POST Get all entries
+POST {{host}}/get_all_entries
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{}

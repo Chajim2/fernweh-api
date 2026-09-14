@@ -1,0 +1,3 @@
+
+need to continue reading up on alembic and upgrade the db
+    add the reversed friendships to sqlite db
